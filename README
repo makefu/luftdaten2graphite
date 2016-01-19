@@ -1,0 +1,7 @@
+# Import a single file
+
+    python luftdaten2graphite.py <csv>
+
+# import the archive 
+  wget -m http://archive.luftdaten.info/
+  find archive.luftdaten.info -name \*.csv | parallel --verbose -j 5 -n1 python ./luftdaten2graphite.py
