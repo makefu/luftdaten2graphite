@@ -23,11 +23,9 @@ with open(sys.argv[1]) as csvfile:
     for row in r:
         # TODO: multiple ids in csvfile
         sensor_id=row['sensor_id']
-        timedate,tz = row['timestamp'].split("+")
-        tz = tz.replace(":","")
-        ts = round(dt.datetime.strptime("+".join([timedate,tz]),"%Y-%m-%dT%H:%M:%S.%f%z").timestamp())
+        timedate = row['timestamp'].split("+")[0]
+        ts = ( dt.datetime.strptime(timedate,"%Y-%m-%dT%H:%M:%S.%f") - dt.datetime.fromtimestamp(0)).total_seconds()
         p1.append([row["P1"],ts])
         p2.append([row["P2"],ts])
-
     send_all_data("sensors.feinstaub.{}.P1".format(sensor_id),p1)
     send_all_data("sensors.feinstaub.{}.P2".format(sensor_id),p2)
